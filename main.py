@@ -25,8 +25,14 @@ class App(tkinter.Tk):
 
         ## Making the plot button
         self.confirm = ttk.Button(self, text="Plot", command=self.plotgraph)
+        self.confirm.grid(column=0, row=6, columnspan=4)
 
-        self.confirm.grid(column=0, row=6, columnspan=5)
+        ## Making origin adjust toggle
+        self.adjust_origin_button = ttk.Checkbutton(self, text="Make all heights postitive", command=self.toggle_adjust)
+        self.adjust_origin = False
+
+    def toggle_adjust(self):
+        self.adjust_origin = not self.adjust_origin
 
     def setbox(self, i, j):
         try:
@@ -39,15 +45,28 @@ class App(tkinter.Tk):
         print(self.heightmap)
 
     def plotgraph(self):
+        min_height = 10000
         for i in range(5):
             for j in range(5):
                 try:
                     self.heightmap[i][j] = float(self.entries[i][j].get())
+                    if self.heightmap[i][j] < min_height:
+                        min_height = self.heightmap[i][j]
                 except ValueError:
                     self.entries[i][j].delete(0, tkinter.END)
                     self.entries[i][j].insert(0,"Error")
                     self.heightmap[i][j] = 0.0
-        self.make_plot(self.heightmap)
+
+        # Possible adjust the heightmap
+        data = self.heightmap.copy()
+        if not self.adjust_origin:
+            self.make_plot(self.heightmap)
+
+        for i in range(5):
+            for j in range(5):
+                data[i][j] += min_height
+
+        self.make_plot(data)
 
     def make_plot(self, data: list[list[float]]):
         front = [i for i in range(5)]
