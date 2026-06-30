@@ -24,4 +24,5 @@ You should have tkinter installed which has the package name of `python3-tk` on 
 1. Download a ZIP of the main branch [here](https://github.com/OldYoshi5258/Creality_printer_bed_heightmap_viewer/archive/refs/heads/main.zip)
 2. Make sure you have python installed with tkinter. When installing python, make sure this box is ticked
 ![tkinter_install](assets/tkinter_install.png)
-3. Open `main.py` with the python interpreter
+3. Run `pip install matplotlib` in powershell or the command prompt
+4. Open `main.py` with the python interpreter
