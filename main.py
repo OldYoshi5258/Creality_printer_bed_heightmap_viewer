@@ -18,18 +18,19 @@ class App(tkinter.Tk):
             row = []
             for y in range(5):
                 row.append(ttk.Entry(self))
-                row[-1].insert(0,"0")
+                row[-1].insert(0,self.heightmap[x][y])
                 row[-1].bind('<Return>', lambda event, i=x, j=y: [self.setbox(i,j)])
                 row[-1].grid(column=y, row=x)
             self.entries.append(row)
 
         ## Making the plot button
         self.confirm = ttk.Button(self, text="Plot", command=self.plotgraph)
-        self.confirm.grid(column=0, row=6, columnspan=4)
+        self.confirm.grid(column=0, row=5, columnspan=3)
 
         ## Making origin adjust toggle
         self.adjust_origin_button = ttk.Checkbutton(self, text="Make all heights postitive", command=self.toggle_adjust)
         self.adjust_origin = False
+        self.adjust_origin_button.grid(column=3, row=5, columnspan=2)
 
     def toggle_adjust(self):
         self.adjust_origin = not self.adjust_origin
@@ -61,10 +62,11 @@ class App(tkinter.Tk):
         data = self.heightmap.copy()
         if not self.adjust_origin:
             self.make_plot(self.heightmap)
+            return
 
         for i in range(5):
             for j in range(5):
-                data[i][j] += min_height
+                data[i][j] -= min_height
 
         self.make_plot(data)
 
@@ -91,4 +93,5 @@ class App(tkinter.Tk):
 
 if __name__ == "__main__":
     root = App()
+    
     root.mainloop()
